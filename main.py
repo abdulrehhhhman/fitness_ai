@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.recommender.routes import router as recommender_router
-from backend.vision.routes import router as vision_router
+from app.recommender.routes import router as recommender_router
+from app.vision.routes import router as vision_router
 
 # Create FastAPI instance
 app = FastAPI(
@@ -35,9 +35,9 @@ async def root():
         "version": "2.0.0",
         "features": [
             "Personalized fitness and nutrition recommendations",
-            "Computer vision exercise form analysis",
+            "Computer vision exercise form analysis via video upload",
             "Automatic repetition counting",
-            "Real-time form feedback"
+            "Form feedback and quality scoring"
         ],
         "docs": "/docs",
         "health": "/health",
@@ -54,7 +54,7 @@ async def health_check():
     """
     try:
         # Import here to avoid circular imports
-        from backend.vision.service import vision_service
+        from app.vision.service import vision_service
         
         # Check vision service health
         vision_health = vision_service.check_service_health()

@@ -14,13 +14,6 @@ class VideoAnalysisRequest(BaseModel):
     class Config:
         use_enum_values = True
 
-class WebcamAnalysisRequest(BaseModel):
-    exercise_type: ExerciseType = Field(..., description="Type of exercise to analyze")
-    duration_seconds: Optional[int] = Field(default=30, ge=10, le=300, description="Duration for webcam analysis in seconds")
-    
-    class Config:
-        use_enum_values = True
-
 class FormFeedback(BaseModel):
     timestamp: float = Field(..., description="Timestamp in video when feedback applies")
     message: str = Field(..., description="Feedback message about form")

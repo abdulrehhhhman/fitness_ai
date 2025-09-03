@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Depends
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 import tempfile
 import os
@@ -7,7 +7,7 @@ from typing import Optional
 import aiofiles
 
 from .schema import (
-    VideoAnalysisRequest, WebcamAnalysisRequest, AnalysisResponse, 
+    VideoAnalysisRequest, AnalysisResponse, 
     ErrorResponse, HealthCheckResponse, ServiceInfoResponse,
     ExerciseType
 )
@@ -128,47 +128,6 @@ async def analyze_video(
                 os.remove(temp_path)
             except:
                 pass
-
-@router.post("/analyze-webcam",
-             response_model=AnalysisResponse,
-             responses={
-                 400: {"model": ErrorResponse, "description": "Bad Request"},
-                 500: {"model": ErrorResponse, "description": "Internal Server Error"}
-             })
-async def analyze_webcam(request: WebcamAnalysisRequest) -> AnalysisResponse:
-    """
-    Start webcam analysis for real-time exercise monitoring.
-    
-    **Note:** This endpoint is designed for local development and testing.
-    In production, consider using WebSocket connections for real-time video analysis.
-    
-    **Parameters:**
-    - **exercise_type**: Type of exercise to monitor
-    - **duration_seconds**: How long to analyze (10-300 seconds)
-    
-    **Returns:**
-    - Real-time analysis results
-    - Form feedback and rep counting
-    
-    **Limitations:**
-    - Requires local webcam access
-    - Not suitable for web deployment without additional setup
-    """
-    try:
-        # For now, return a placeholder response as webcam analysis
-        # requires additional setup for web deployment
-        return AnalysisResponse(
-            success=False,
-            message="Webcam analysis not implemented for web deployment. Use video upload instead.",
-            result=None,
-            processing_time=0.0
-        )
-        
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Webcam analysis failed: {str(e)}"
-        )
 
 @router.get("/health", response_model=HealthCheckResponse)
 async def health_check() -> HealthCheckResponse:
